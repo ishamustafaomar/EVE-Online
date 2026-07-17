@@ -168,6 +168,31 @@ export class RegionalMarket {
     return { ok: true, trades };
   }
 
+  /** Serializable order-book state for persistence snapshots. */
+  snapshot(): { seq: number; orders: Array<Omit<MarketOrder, 'regionId'>> } {
+    return {
+      seq: this.seq,
+      orders: [...this.ordersById.values()].map((o) => ({
+        id: o.id, side: o.side, stationId: o.stationId, typeId: o.typeId,
+        price: o.price, remaining: o.remaining, owner: o.owner, createdSeq: o.createdSeq,
+      })),
+    };
+  }
+
+  /** Restore books from a snapshot. Escrow state lives in the ledger/item store. */
+  restore(data: { seq: number; orders: Array<Omit<MarketOrder, 'regionId'>> }): void {
+    this.booksByType.clear();
+    this.ordersById.clear();
+    this.seq = data.seq;
+    for (const o of data.orders) {
+      const order: MarketOrder = { ...o, regionId: this.regionId };
+      const book = this.book(order.typeId);
+      (order.side === 'buy' ? book.buys : book.sells).push(order);
+      this.ordersById.set(order.id, order);
+    }
+    for (const book of this.booksByType.values()) this.sort(book);
+  }
+
   cancelOrder(id: OrderId, requester: CharacterId): { ok: boolean; error?: string } {
     const order = this.ordersById.get(id);
     if (!order) return { ok: false, error: 'unknown order' };

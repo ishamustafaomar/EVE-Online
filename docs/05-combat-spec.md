@@ -103,6 +103,7 @@ items (manufactured, lootable) — losing familiars costs lumens.
 ## 10. Implemented today (Milestone A)
 
 `packages/core/src/combat/`: layered damage with resists & cascade, turret hit model,
-flux pool & module cycling, snare/stasis/painter/jam effects, deterministic seeded
-resolution — all under unit test, exercised end-to-end by the server integration test
-(fight between two fitted frigates resolves identically across runs).
+warhead travel & signature mitigation, flux pool & module cycling, and
+snare/stasis/painter/jam effects — deterministic seeded resolution under unit test
+(replays are bit-identical). The server integration suite exercises the full loop
+live: two fitted frigates fight over WebSockets until wreck, loot, and respawn.

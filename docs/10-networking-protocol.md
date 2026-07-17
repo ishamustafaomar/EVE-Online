@@ -39,18 +39,20 @@ Server→Client: { v: 1, t: MsgType, d: payload, ack?: seq, tick?: number }
 | C→S | ACTIVATE_MODULE / DEACTIVATE ✦ | module cycling (target optional) |
 | C→S | LOCK_TARGET / UNLOCK ✦ | targeting |
 | C→S | MINE (via ACTIVATE on extractor) ✦ | mining cycles |
-| C→S | FIT_SHIP ✦ | docked refitting |
-| C→S | MARKET_PLACE / MARKET_CANCEL / MARKET_TAKE ✦ | order management |
-| C→S | HANGAR_MOVE / REFINE / MANUFACTURE ✦ | industry & inventory |
-| C→S | CHAT_SEND / CHAT_JOIN ✦ | chat |
+| C→S | FIT_SHIP ✦ | docked refitting (hull swaps included) |
+| C→S | MARKET_PLACE / MARKET_CANCEL / MARKET_BOOK ✦ | order management (immediate "take" = crossing limit order) |
+| C→S | HANGAR_MOVE / REFINE / MANUFACTURE / JOB_COLLECT ✦ | industry & inventory |
+| C→S | LOOT ✦ | wreck salvage scoop |
+| C→S | CHAT_SEND ✦ | chat (system channel auto-joined; CHAT_JOIN for named channels is Milestone B) |
 | C→S | PING ✦ | RTT/keepalive |
-| S→C | WELCOME / ERROR ✦ | session + typed errors |
+| S→C | ACK ✦ | per-seq command result with typed error strings |
+| S→C | WELCOME ✦ | session establishment |
 | S→C | SNAPSHOT ✦ | full grid state on entry |
 | S→C | DELTA ✦ | per-tick entity changes in interest set |
 | S→C | EVENT ✦ | discrete facts: hits, kills, dock/undock, wrecks, cycles |
-| S→C | WALLET / HANGAR / ORDERS ✦ | economic state updates |
-| S→C | CHAT_MSG / PRESENCE ✦ | social |
-| S→C | TICK_RATE | tick-stretch notification (overload fairness) |
+| S→C | WALLET / CARGO / HANGAR / ORDERS / JOBS ✦ | economic state updates |
+| S→C | CHAT / PRESENCE ✦ | social |
+| S→C | TICK_RATE | tick-stretch notification (overload fairness, Milestone E) |
 
 ## 4. Replication & interest management
 

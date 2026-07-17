@@ -57,8 +57,8 @@ binary encoding (v2) → interest radius tuning. Measured by protocol-level byte
 
 ## 6. Implemented today (Milestone A)
 
-The tick loop is allocation-conscious (dirty-set deltas, pooled buffers where it
-matters) and the repo ships micro-benchmarks for the hot domain paths (universe gen,
-matching engine, combat resolution, 100-entity cell tick) via `pnpm bench`, plus a
-budget assertion test that a 100-entity cell tick stays under budget on CI hardware
-(generous CI multiplier to avoid flakes).
+The tick loop is allocation-conscious (delta compression per session: only changed
+ships and dirty asteroids serialize) and the repo ships micro-benchmarks for the hot
+domain paths (universe generation, fitting, combat resolution, market matching) via
+`pnpm bench`, plus a budget assertion test that a 100-ship cell tick stays under 4× the
+25 ms budget on CI hardware (measured ~0.2 ms on the reference container).

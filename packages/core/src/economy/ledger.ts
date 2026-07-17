@@ -93,6 +93,24 @@ export class LumenLedger {
     for (const v of this.balances.values()) sum += v;
     return { sumBalances: sum, minted: this.minted, burned: this.burned, conserved: sum === this.minted - this.burned };
   }
+
+  /** Serializable state for persistence snapshots (doc 09 §3). */
+  snapshot(): { balances: Array<[string, number]>; minted: number; burned: number } {
+    return {
+      balances: [...this.balances.entries()].map(([k, v]) => [k as string, v]),
+      minted: this.minted,
+      burned: this.burned,
+    };
+  }
+
+  restore(data: { balances: Array<[string, number]>; minted: number; burned: number }): void {
+    this.balances.clear();
+    for (const [account, balance] of data.balances) {
+      this.balances.set(account as LedgerAccountId, balance);
+    }
+    this.minted = data.minted;
+    this.burned = data.burned;
+  }
 }
 
 export type ItemCause = 'mining' | 'refine' | 'manufacture' | 'loot' | 'trade' | 'spawn-starter' | 'destroy';
@@ -160,6 +178,38 @@ export class ItemStore {
   /** Move everything at `from` to `to` (dock transfers, loot scoops). */
   moveAll(from: LocationId, to: LocationId): void {
     for (const { typeId, qty } of this.contents(from)) this.move(from, to, typeId, qty);
+  }
+
+  /** Serializable state for persistence snapshots (doc 09 §3). */
+  snapshot(): {
+    stacks: Array<[string, string, number]>;
+    minted: Array<[string, number]>;
+    burned: Array<[string, number]>;
+  } {
+    const stacks: Array<[string, string, number]> = [];
+    for (const [loc, types] of this.locations) {
+      for (const [typeId, qty] of types) stacks.push([loc as string, typeId as string, qty]);
+    }
+    return {
+      stacks,
+      minted: [...this.mintedByType.entries()].map(([k, v]) => [k as string, v]),
+      burned: [...this.burnedByType.entries()].map(([k, v]) => [k as string, v]),
+    };
+  }
+
+  restore(data: {
+    stacks: Array<[string, string, number]>;
+    minted: Array<[string, number]>;
+    burned: Array<[string, number]>;
+  }): void {
+    this.locations.clear();
+    this.mintedByType.clear();
+    this.burnedByType.clear();
+    for (const [loc, typeId, qty] of data.stacks) {
+      this.adjust(loc as LocationId, typeId as ItemTypeId, qty);
+    }
+    for (const [typeId, qty] of data.minted) this.mintedByType.set(typeId as ItemTypeId, qty);
+    for (const [typeId, qty] of data.burned) this.burnedByType.set(typeId as ItemTypeId, qty);
   }
 
   /** Conservation audit per type: held must equal minted - burned. */

@@ -68,7 +68,8 @@ No partial systems on main: feature branches merge complete verticals only.
 
 ## 3. Implemented today (Milestone A)
 
-The pyramid's first four layers exist and run in `pnpm test`: 200+ unit/property/golden
-tests across core/protocol, plus server integration suites driving the real gateway.
-`pnpm validate:content` runs the content gates; `pnpm bench` runs micro-benchmarks;
-determinism lint enforced via ESLint-free grep gate in `tools/check-determinism.mjs`.
+The pyramid's first five layers exist and run in `pnpm test`: 115+ tests — unit,
+property (conservation, determinism), golden (universe hash), integration (real
+gateway + client SDK driving mine→refine→build→trade→fight→loot flows), and a perf
+budget assertion. `pnpm validate:content` runs the content gates; `pnpm bench` runs
+micro-benchmarks; determinism enforced by `tools/check-determinism.mjs`.

@@ -70,5 +70,6 @@ Gateway: HMAC session tokens, schema validation on every message, per-class toke
 buckets, size caps, typed errors. Sim: full server-side precondition validation for
 every implemented verb (movement/arc/dock/fit/mine/market/refine/manufacture).
 Economy: ledger API with escrowed orders and a conservation test-suite (property-style
-random order storms must conserve lumens/items exactly). Interest filtering: only
-grid-visible entities serialize to the wire — verified by test.
+random order storms must conserve lumens/items exactly; the integration suite re-audits
+after every end-to-end flow). Interest filtering: only grid-visible entities serialize
+to the wire (cross-system invisibility asserted by integration test).

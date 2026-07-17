@@ -77,8 +77,9 @@ transcript evidence (server keeps chat logs per retention policy).
 
 ## 6. Implemented today (Milestone A)
 
-Identity + wallet + hangar + station services with role-checked access are implemented
-server-side (single-player-per-account entities; syndicate object model defined in
-`@starweft/core` types with membership/roles enforced in the service layer for wallets
-and hangars). Chat channels: system-local and private implemented in the gateway.
-Claimweave, wars, contracts: Milestone C per roadmap (doc 15).
+Identity, per-character wallets, per-station hangars, and ownership-checked station
+services (market/refinery/industry access rules) are implemented server-side. Chat:
+system-local channel with presence lists and private DMs run through the gateway.
+Syndicate schema is specified in `docs/sql/schema.sql` (organizations, membership,
+role bitmasks); the syndicate service, Claimweave, wars, and contracts land in
+Milestones B–C per the roadmap (doc 15).

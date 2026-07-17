@@ -118,6 +118,7 @@ export type C2S =
   | { t: 'REFINE'; d: { oreId: string; units: number } }
   | { t: 'MANUFACTURE'; d: { blueprintId: string; runs: number } }
   | { t: 'JOB_COLLECT'; d: { jobId: string } }
+  | { t: 'LOOT'; d: { wreckId: string } }
   | { t: 'CHAT_SEND'; d: { channel: string; text: string } }
   | { t: 'PING'; d: { nonce: number } };
 
@@ -252,6 +253,7 @@ export const C2S_VALIDATORS: { [K in C2SType]: Check<Extract<C2S, { t: K }>['d']
   REFINE: vObject({ oreId: idString, units: vInt({ min: 1, max: 1e9 }) }),
   MANUFACTURE: vObject({ blueprintId: idString, runs: vInt({ min: 1, max: 1000 }) }),
   JOB_COLLECT: vObject({ jobId: idString }),
+  LOOT: vObject({ wreckId: idString }),
   CHAT_SEND: vObject({ channel: vString({ min: 1, max: 128 }), text: vString({ min: 1, max: 2000 }) }),
   PING: vObject({ nonce: vInt({ min: 0, max: Number.MAX_SAFE_INTEGER }) }),
 };
