@@ -31,7 +31,7 @@ Every hull defines:
   flux relays, cargo optimizers.
 - **Weave (W):** permanent hull mods (destroyed on removal); specialization.
 
-## 2. Ship roster (MVP: 16 hulls, all original)
+## 2. Ship roster (MVP: 19 hulls, all original)
 
 | Class | Accord | Combine | Covenant | Freeholds |
 |---|---|---|---|---|

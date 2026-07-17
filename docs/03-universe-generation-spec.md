@@ -17,7 +17,8 @@ runtime.
 ## 2. Pipeline (deterministic stages)
 
 Each stage consumes the output of the previous plus a namespaced PRNG stream
-(`pcg32(seed, stageId, entityId)`), so edits to one stage don't reshuffle others.
+(`rngStream(seed, stageId, entityId)` — xoshiro128** seeded via FNV-1a path hashing),
+so edits to one stage don't reshuffle others.
 
 ### Stage A — Region layout
 - Place 40–64 **regions** as points in a 2.5D disc (galactic plane with slight z-noise)

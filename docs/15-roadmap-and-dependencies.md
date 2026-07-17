@@ -38,9 +38,9 @@ system above is an extension, not a rewrite.
 
 ### Milestone A — "The Spine" ✅ (this repository, now)
 Design doc set (00–15) + working foundation:
-- `@starweft/core`: deterministic kernel (PCG32 streams, vec math, ids); universe
+- `@starweft/core`: deterministic kernel (xoshiro128** streams, vec math, ids); universe
   generator (Stages A–G, 1,000+ systems, validation gates as tests); original content
-  pack v1 (16 hulls, 40+ modules, 8 ores/minerals, munitions, blueprints); fitting
+  pack v1 (19 hulls, 45 modules, 8 ores + 8 minerals, munitions, blueprints); fitting
   engine (slots, budgets, interference falloff, derived stats); combat resolver
   (layers/resists, tracking model, flux, EW subset); ledger + regional market engine
   (escrow, fees, price-time matching); industry (refining, manufacturing, ME/TE).

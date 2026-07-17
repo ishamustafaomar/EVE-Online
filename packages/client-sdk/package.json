@@ -1,0 +1,32 @@
+{
+  "name": "@starweft/client-sdk",
+  "version": "0.1.0",
+  "description": "STARWEFT typed client SDK over protocol v1: connection, session, world/market/industry commands, normalized event stream.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "test": "tsc -p tsconfig.test.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@starweft/core": "workspace:*",
+    "@starweft/protocol": "workspace:*",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.4"
+  }
+}
