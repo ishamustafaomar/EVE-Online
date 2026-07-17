@@ -1,0 +1,27 @@
+{
+  "name": "@starweft/core",
+  "version": "0.1.0",
+  "description": "STARWEFT deterministic domain engine: kernel, universe generation, content, fitting, combat, economy, industry.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "test": "tsc -p tsconfig.test.json --noEmit && vitest run",
+    "bench": "vitest bench --run",
+    "validate:content": "tsc -b && node scripts/validate-content.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.4"
+  }
+}

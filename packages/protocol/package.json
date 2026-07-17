@@ -1,0 +1,28 @@
+{
+  "name": "@starweft/protocol",
+  "version": "0.1.0",
+  "description": "STARWEFT network protocol v1: typed message catalog with runtime validation, shared by client and server.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "test": "tsc -p tsconfig.test.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "@starweft/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.4"
+  }
+}
