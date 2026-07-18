@@ -128,22 +128,30 @@
       from a terminal.
     </p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://github.com/ishamustafaomar/EVE-Online" target="_blank" rel="noopener">View the repo</a>
+      <a class="btn btn-primary" href="./play/">Play in browser</a>
+      <a class="btn btn-secondary" href="https://github.com/ishamustafaomar/EVE-Online" target="_blank" rel="noopener">View the repo</a>
       <a class="btn btn-secondary" href="https://github.com/ishamustafaomar/EVE-Online/blob/main/docs/00-vision-and-pillars.md" target="_blank" rel="noopener">Read the design plan</a>
     </div>
   </header>
 
   <section>
     <h2>Play it</h2>
+    <p style="color: var(--text-dim); font-size: 0.92rem; margin-top: 0;">
+      <a class="btn btn-secondary" href="./play/" style="padding: 6px 14px; font-size: 0.88rem;">Play in browser →</a>
+      drops you straight into a solo sandbox — the real engine running client-side,
+      no install. Progress saves to your browser only; it's just you and a target
+      dummy for now, not the shared multiplayer universe.
+    </p>
     <pre><code>git clone https://github.com/ishamustafaomar/EVE-Online.git
 cd EVE-Online
 pnpm install
 pnpm play</code></pre>
     <p style="color: var(--text-dim); font-size: 0.92rem;">
-      Hosts a local universe and drops you into a command prompt —
-      <code>look</code>, <code>undock</code>, <code>fit mining</code>,
-      <code>goto b11</code>, <code>mine 1 3</code>, <code>market ammo.ferro-slug</code>.
-      Run <code>pnpm play --name "Someone Else"</code> from a second terminal to join
+      For the real multiplayer shard, this hosts a local universe and drops you
+      into a command prompt — <code>look</code>, <code>undock</code>,
+      <code>fit mining</code>, <code>goto b11</code>, <code>mine 1 3</code>,
+      <code>market ammo.ferro-slug</code>. Run
+      <code>pnpm play --name "Someone Else"</code> from a second terminal to join
       the same universe as another pilot.
     </p>
   </section>
@@ -177,6 +185,7 @@ pnpm play</code></pre>
       <tr><td class="done">Deterministic engine</td><td>Procedural universe generator (1,000+ systems), original content pack, fitting and combat math — 71 tests.</td></tr>
       <tr><td class="done">Authoritative server</td><td>WebSocket gateway, 4&nbsp;Hz simulation cells, conservation-audited economy, snapshot persistence — 40 tests.</td></tr>
       <tr><td class="done">Terminal client</td><td>A real playable REPL over the live simulation, solo or multiplayer on a LAN — 49 tests.</td></tr>
+      <tr><td class="done">Browser sandbox</td><td>The same engine running client-side — mining, fitting, industry, markets, and combat, no install, no server.</td></tr>
       <tr><td class="next">Next: living market</td><td>PostgreSQL persistence, contracts, insurance, NPC economic actors, exploration.</td></tr>
     </table>
   </section>
