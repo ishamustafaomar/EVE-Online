@@ -24,8 +24,8 @@ import {
   type OrderView,
   type S2C,
 } from '@starweft/protocol';
-import { verifySessionToken } from '../auth.js';
-import type { GameServerConfig } from '../config.js';
+import { issueSessionToken, verifySessionToken } from '../auth.js';
+import { RULES, type GameServerConfig } from '../config.js';
 import { SessionRateLimiter } from '../ratelimit.js';
 import type { MarketService } from '../services/market.js';
 import { ShipLocations, type CharacterState } from '../world/state.js';
@@ -232,6 +232,15 @@ export class Gateway {
     }
   }
 
+  /** Authenticate a session as `charId`, superseding any prior session for it. */
+  private authenticateSession(session: Session, charId: CharacterId): void {
+    const existing = this.byCharacter.get(charId);
+    if (existing && existing !== session) existing.socket.close(1000, 'session superseded');
+    session.characterId = charId;
+    session.phase = 'authed';
+    this.byCharacter.set(charId, session);
+  }
+
   private requireCharacter(session: Session): CharacterState | null {
     if (!session.characterId) return null;
     return this.world.characters.get(session.characterId) ?? null;
@@ -253,12 +262,26 @@ export class Gateway {
         const charId = verdict.claims.characterId as CharacterId;
         const character = this.world.characters.get(charId);
         if (!character) return this.ack(session, seq, false, 'unknown character');
-        const existing = this.byCharacter.get(charId);
-        if (existing && existing !== session) existing.socket.close(1000, 'session superseded');
-        session.characterId = charId;
-        session.phase = 'authed';
-        this.byCharacter.set(charId, session);
+        this.authenticateSession(session, charId);
         return this.ack(session, seq, true);
+      }
+      case 'DEV_LOGIN': {
+        // Dev/CLI convenience: create-or-reconnect by display name, no
+        // pre-issued token required. Gated by config.devMode — never enabled
+        // on a real deployment (doc 12 §3).
+        if (session.phase === 'connected') return this.ack(session, seq, false, 'HELLO first');
+        if (!this.config.devMode) return this.ack(session, seq, false, 'dev login disabled');
+        const character = this.world.getOrCreateCharacter(msg.d.name);
+        const token = issueSessionToken(
+          {
+            accountId: character.accountId as string,
+            characterId: character.id as string,
+            expiresAtMs: this.nowMs() + RULES.sessionTtlMs,
+          },
+          this.config.sessionSecret,
+        );
+        this.authenticateSession(session, character.id);
+        return this.ack(session, seq, true, undefined, { token, characterId: character.id as string });
       }
       case 'PING':
         return this.send(session, { t: 'PONG', d: { nonce: msg.d.nonce } });
@@ -551,15 +574,10 @@ export class Gateway {
   private pushCargo(session: Session): void {
     const character = this.requireCharacter(session);
     if (!character) return;
-    const fittedStats = (() => {
-      try {
-        const ship = this.world.ship(character);
-        if (ship) return ship.fitted.stats;
-        return null;
-      } catch {
-        return null;
-      }
-    })();
+    // Capacity reflects the current fit whether docked or in space — a
+    // docked pilot's hold doesn't stop existing just because the hull is
+    // sitting in a hangar bay instead of on the grid.
+    const fittedStats = this.world.fittedStats(character);
     const cargoItems = this.world.items.contents(ShipLocations.cargo(character.id));
     const oreItems = this.world.items.contents(ShipLocations.oreHold(character.id));
     this.send(session, {
@@ -567,9 +585,9 @@ export class Gateway {
       d: {
         items: [...cargoItems, ...oreItems].map((s) => ({ typeId: s.typeId as string, qty: s.qty })),
         usedM3: this.world.cargoUsedM3(character.id),
-        capacityM3: fittedStats?.cargo ?? 0,
+        capacityM3: fittedStats.cargo,
         oreHoldUsedM3: this.world.cargoUsedM3(character.id, ShipLocations.oreHold(character.id)),
-        oreHoldCapacityM3: fittedStats?.oreHold ?? 0,
+        oreHoldCapacityM3: fittedStats.oreHold,
       },
     });
   }

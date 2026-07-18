@@ -31,13 +31,48 @@ tested foundation**:
   (PostgreSQL mapping in `docs/sql/schema.sql`).
 - **`@starweft/client-sdk`** — typed client used by the integration tests, load bots,
   and the future game UI.
+- **`@starweft/cli`** — a terminal client you can actually play with today: `pnpm play`.
 
 The integration suite drives the real loop over real sockets: **login → refit →
 undock → arc to a belt → mine → dock → refine → manufacture munitions → trade on the
 market (player↔player and NPC blueprint vendor) → fight → wreck → loot → respawn →
 thread to a neighboring system** — with lumen/item conservation audited at the end.
 
-## Quickstart
+## Play it now
+
+```bash
+pnpm install
+pnpm play                          # hosts a local universe (or joins one already running) and drops you into a REPL
+pnpm play -- --name "Your Name"    # pick a pilot name; reconnecting under the same name resumes that character
+```
+
+The first `pnpm play` on a machine hosts a fresh universe right there (state is saved to
+`.starweft-data/` and resumes automatically next time). Run `pnpm play` again from a
+**second terminal** with a different `--name` to join the same universe as another
+pilot — fly to the same belt, trade with each other, or fight. The terminal hosting the
+server prints a note when it's the host; closing that one ends the session for everyone
+until the next `pnpm play` re-hosts from the saved state.
+
+Once connected, type `help` for the full command list. A first session looks like:
+
+```
+> look                 # see beacons and nearby entities
+> fit mining           # swap into the starter mining hull (Mattock)
+> undock
+> goto b11              # arc or burn toward a beacon — picked automatically by range
+> mine 1 3              # extractor in hardpoint 1, targeting entity #3
+> goto b9
+> dock b9
+> unload ore.regolite 1000
+> refine ore.regolite 1000
+> build bp.ammo.ferro-slug 1
+```
+
+Beacons are referenced as `b1`, `b2`, … from the last `look`; ships/asteroids/wrecks are
+bare numbers. `market <typeId>`, `buy`/`sell`/`cancel`, `who`/`say`/`tell`, and combat
+(`lock`/`fire`/`activate`) all work the same way — see `help` in-session for the rest.
+
+## Quickstart (development)
 
 ```bash
 pnpm install
@@ -46,7 +81,7 @@ pnpm validate:content   # content pack + universe validation gates
 pnpm check:determinism  # no ambient time/randomness in rule code
 pnpm bench              # hot-path micro-benchmarks
 
-# run a dev server (test universe, ws://localhost:8777)
+# run a standalone dev server (test universe, ws://localhost:8777)
 node packages/server/dist/main.js
 ```
 
@@ -59,6 +94,7 @@ packages/core         deterministic domain engine (rules, content, universe)
 packages/protocol     wire protocol v1 + validators
 packages/server       authoritative server (gateway, cells, services, persistence)
 packages/client-sdk   typed client (tests, bots, future UI)
+packages/cli          terminal client — `pnpm play`
 tools/                determinism gate
 ```
 

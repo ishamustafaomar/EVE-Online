@@ -8,6 +8,31 @@ importers:
 
   .: {}
 
+  packages/cli:
+    dependencies:
+      '@starweft/client-sdk':
+        specifier: workspace:*
+        version: link:../client-sdk
+      '@starweft/core':
+        specifier: workspace:*
+        version: link:../core
+      '@starweft/protocol':
+        specifier: workspace:*
+        version: link:../protocol
+      '@starweft/server':
+        specifier: workspace:*
+        version: link:../server
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.20.1
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.1)
+
   packages/client-sdk:
     dependencies:
       '@starweft/core':
