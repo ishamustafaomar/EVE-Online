@@ -100,6 +100,7 @@ export type SlotRow = 'hardpoint' | 'auxiliary' | 'core';
 export type C2S =
   | { t: 'HELLO'; d: { proto: number } }
   | { t: 'LOGIN'; d: { token: string } }
+  | { t: 'DEV_LOGIN'; d: { name: string } }
   | { t: 'ENTER_WORLD'; d: Record<string, never> }
   | { t: 'MOVE'; d: MoveOrderJson }
   | { t: 'ARC_TO'; d: { dest: Vec3Json } }
@@ -226,6 +227,7 @@ const vSlotRow = vEnum('hardpoint', 'auxiliary', 'core');
 export const C2S_VALIDATORS: { [K in C2SType]: Check<Extract<C2S, { t: K }>['d']> } = {
   HELLO: vObject({ proto: vInt({ min: 1, max: 1000 }) }),
   LOGIN: vObject({ token: vString({ min: 16, max: 2048 }) }),
+  DEV_LOGIN: vObject({ name: vString({ min: 1, max: 64 }) }),
   ENTER_WORLD: vEmpty as Check<Record<string, never>>,
   MOVE: vMoveOrder,
   ARC_TO: vObject({ dest: vVec3 }),

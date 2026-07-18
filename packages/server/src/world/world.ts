@@ -25,6 +25,7 @@ import {
   type ContentRegistry,
   type EntityId,
   type FitLoadout,
+  type FittedStats,
   type ItemTypeId,
   type JobId,
   type LocationId,
@@ -156,6 +157,19 @@ export class World {
 
   // ── Characters ──────────────────────────────────────────────────────────
 
+  findCharacterByName(name: string): CharacterState | undefined {
+    for (const character of this.characters.values()) {
+      if (character.name === name) return character;
+    }
+    return undefined;
+  }
+
+  /** Idempotent by name: re-connecting as the same name reconnects to the
+   *  same character instead of spawning a fresh one (dev/CLI convenience). */
+  getOrCreateCharacter(name: string): CharacterState {
+    return this.findCharacterByName(name) ?? this.createCharacter(name);
+  }
+
   createCharacter(name: string): CharacterState {
     const charId = mkCharacterId(`char.${this.characterCounter}`);
     const account: AccountId = mkAccountId(`acct.${this.characterCounter}`);
@@ -218,6 +232,15 @@ export class World {
     if (!character.shipEntityId) return null;
     const cell = this.cells.get(character.systemId);
     return (cell?.ships.get(character.shipEntityId) as ShipEntity | undefined) ?? null;
+  }
+
+  /** Derived stats (cargo/oreHold capacity, etc.) for the character's current
+   *  fit, whether or not a live ship entity exists — docked pilots still
+   *  have a hold size, they just aren't in space to prove it. */
+  fittedStats(character: CharacterState): FittedStats {
+    const ship = this.ship(character);
+    if (ship) return ship.fitted.stats;
+    return computeFit(this.registry, character.loadout, character.skills).stats;
   }
 
   // ── Docking / undocking / threading ─────────────────────────────────────

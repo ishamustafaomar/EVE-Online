@@ -36,6 +36,7 @@ export type MessageClass = 'movement' | 'combat' | 'economy' | 'social' | 'meta'
 const CLASS_OF: Record<C2SType, MessageClass> = {
   HELLO: 'meta',
   LOGIN: 'meta',
+  DEV_LOGIN: 'meta',
   ENTER_WORLD: 'meta',
   PING: 'meta',
   MOVE: 'movement',

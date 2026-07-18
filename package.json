@@ -2,7 +2,7 @@
   "name": "starweft",
   "version": "0.1.0",
   "private": true,
-  "description": "STARWEFT — an original sandbox space MMO. Monorepo: deterministic core, protocol, authoritative server, client SDK.",
+  "description": "STARWEFT — an original sandbox space MMO. Monorepo: deterministic core, protocol, authoritative server, client SDK, terminal client.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -15,6 +15,7 @@
     "bench": "pnpm -r --if-present run bench",
     "typecheck": "pnpm -r run typecheck",
     "validate:content": "pnpm --filter @starweft/core run validate:content",
-    "check:determinism": "node tools/check-determinism.mjs"
+    "check:determinism": "node tools/check-determinism.mjs",
+    "play": "pnpm --filter @starweft/cli run build && pnpm --filter @starweft/cli run start"
   }
 }

@@ -126,6 +126,15 @@ export class StarweftClient {
     await this.request({ t: 'LOGIN', d: { token } });
   }
 
+  /** Dev/CLI convenience: create-or-reconnect by name, no token needed.
+   *  Only accepted by servers running with devMode enabled. */
+  async devLogin(name: string): Promise<{ token: string; characterId: string }> {
+    return (await this.request({ t: 'DEV_LOGIN', d: { name } })) as {
+      token: string;
+      characterId: string;
+    };
+  }
+
   async enterWorld(): Promise<void> {
     await this.request({ t: 'ENTER_WORLD', d: {} });
   }

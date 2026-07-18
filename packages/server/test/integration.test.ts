@@ -61,6 +61,13 @@ describe('authentication & session', () => {
     expect(alice.state.hangar.length).toBeGreaterThan(0);
   });
 
+  it('reports real cargo capacity while docked, not zero', () => {
+    // No live ship entity exists while docked; capacity must still reflect
+    // the character's current fit (regression: World.fittedStats fallback).
+    expect(alice.state.cargoCapacityM3).toBeGreaterThan(0);
+    expect(alice.state.cargoUsedM3).toBeLessThanOrEqual(alice.state.cargoCapacityM3);
+  });
+
   it('enforces rate limits with typed errors', { timeout: LONG }, async () => {
     const results: string[] = [];
     for (let i = 0; i < 10; i++) {

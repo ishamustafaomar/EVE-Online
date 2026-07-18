@@ -16,6 +16,7 @@ describe('C2S parsing at the trust boundary', () => {
     const messages: C2S[] = [
       { t: 'HELLO', d: { proto: 1 } },
       { t: 'LOGIN', d: { token: 'x'.repeat(32) } },
+      { t: 'DEV_LOGIN', d: { name: 'Wanderer' } },
       { t: 'ENTER_WORLD', d: {} },
       { t: 'MOVE', d: { kind: 'hold' } },
       { t: 'MOVE', d: { kind: 'moveTo', dest: { x: 1, y: 2, z: 3 } } },

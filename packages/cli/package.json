@@ -1,0 +1,27 @@
+{
+  "name": "@starweft/cli",
+  "version": "0.1.0",
+  "description": "STARWEFT terminal client: auto-hosts or joins a local universe and lets you actually fly, mine, trade, and fight from a terminal.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "starweft": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "test": "tsc -p tsconfig.test.json --noEmit && vitest run",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@starweft/core": "workspace:*",
+    "@starweft/protocol": "workspace:*",
+    "@starweft/client-sdk": "workspace:*",
+    "@starweft/server": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.4"
+  }
+}

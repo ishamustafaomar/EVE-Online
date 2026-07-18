@@ -44,11 +44,18 @@ Design doc set (00–15) + working foundation:
   engine (slots, budgets, interference falloff, derived stats); combat resolver
   (layers/resists, tracking model, flux, EW subset); ledger + regional market engine
   (escrow, fees, price-time matching); industry (refining, manufacturing, ME/TE).
-- `@starweft/protocol`: v1 envelope + validators for the implemented verb set.
+- `@starweft/protocol`: v1 envelope + validators for the implemented verb set, plus a
+  devMode-gated `DEV_LOGIN` (create-or-reconnect a character by name — no pre-issued
+  token needed; real account/password auth is Milestone B's Identity service).
 - `@starweft/server`: gateway (auth, rate limits, validation), 4 Hz system cells
   (movement/arc/thread/dock/lock/modules/mining), market+industry services over the
   ledger, snapshot persistence, system chat.
 - `@starweft/client-sdk`: typed client used by integration tests.
+- `@starweft/cli`: a real terminal client (`pnpm play`) — auto-hosts a local universe
+  or joins one already running (so a second terminal is genuine multiplayer against
+  the same world), with a readline REPL covering navigation, mining, fitting,
+  industry, markets, combat, and chat. This is a stopgap for Milestone D's UI, not a
+  replacement for it — but it means Milestone A is playable today, not just testable.
 - Test suite: unit/property/golden/integration + bench + content validation.
 
 ### Milestone B — "A Living Market" 
@@ -91,4 +98,5 @@ its domain.
 | Protocol v1 | ✅ doc 10 | ✅ protocol | ✅ fixture round-trips |
 | Server spine | ✅ docs 09/10/12 | ✅ server | ✅ integration flows |
 | Client SDK | ✅ docs 10/11 | ✅ client-sdk | ✅ used by integration |
+| Terminal client (`pnpm play`) | — (stopgap, not doc 11's Threadglass UI) | ✅ cli | ✅ unit (parser/queue) + manual live playtest |
 | Sounding/rifts/AI/UI/sov/contracts | ✅ specs | ⏳ per milestones B–E | — |

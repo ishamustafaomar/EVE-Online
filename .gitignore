@@ -2,5 +2,6 @@ node_modules/
 dist/
 *.tsbuildinfo
 .snapshots/
+.starweft-data/
 coverage/
 .DS_Store
