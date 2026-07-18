@@ -108,6 +108,28 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.1)
 
+  packages/web:
+    dependencies:
+      '@starweft/core':
+        specifier: workspace:*
+        version: link:../core
+      '@starweft/protocol':
+        specifier: workspace:*
+        version: link:../protocol
+      '@starweft/server':
+        specifier: workspace:*
+        version: link:../server
+    devDependencies:
+      esbuild:
+        specifier: ^0.28.1
+        version: 0.28.1
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.1)
+
 packages:
 
   '@esbuild/aix-ppc64@0.28.1':

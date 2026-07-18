@@ -2,6 +2,13 @@
  * World service: universe pack, system cells, character lifecycle, and every
  * station-side verb (dock, fit, hangar, refine, manufacture). All inventory
  * and wallet mutations route through the core ledger APIs (doc 12 §2).
+ *
+ * This file (and cell.ts, state.ts, config.ts, services/market.ts,
+ * gateway/views.ts) has no Node/ws-specific imports by design — @starweft/web
+ * bundles them straight into the browser for the solo sandbox, driving the
+ * exact same simulation in-process instead of over a socket. Keep it that
+ * way: only gateway.ts, auth.ts, persistence/snapshot.ts, and game.ts should
+ * ever import 'ws' or 'node:*'.
  */
 
 import {

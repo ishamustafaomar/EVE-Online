@@ -10,6 +10,30 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./world": {
+      "types": "./dist/world/world.d.ts",
+      "default": "./dist/world/world.js"
+    },
+    "./cell": {
+      "types": "./dist/world/cell.d.ts",
+      "default": "./dist/world/cell.js"
+    },
+    "./state": {
+      "types": "./dist/world/state.d.ts",
+      "default": "./dist/world/state.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "default": "./dist/config.js"
+    },
+    "./market": {
+      "types": "./dist/services/market.d.ts",
+      "default": "./dist/services/market.js"
+    },
+    "./views": {
+      "types": "./dist/gateway/views.d.ts",
+      "default": "./dist/gateway/views.js"
     }
   },
   "files": ["dist"],
